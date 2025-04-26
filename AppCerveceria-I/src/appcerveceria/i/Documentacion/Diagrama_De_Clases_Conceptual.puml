@@ -1,0 +1,75 @@
+@startuml
+
+class Producto {
+    - idProducto : int
+    - nombre : String
+    - descripcion : String
+    - precio : double
+    - stock : int
+}
+
+class Cliente {
+    - idCliente : int
+    - nombre : String
+    - apellido : String
+    - telefono : String
+    - correo : String
+}
+
+class DetalleVenta {
+    - producto : Producto
+    - cantidad : int
+    + calcularSubtotal() : double
+}
+
+class Venta {
+    - idVenta : int
+    - fecha : Date
+    - cliente : Cliente
+    - detalles : List<DetalleVenta>
+    + calcularTotal() : double
+}
+
+class Administrador {
+    - idAdmin : int
+    - nombre : String
+    - cargo : String
+    + agregarProducto(List<Producto>, Producto)
+    + eliminarProducto(List<Producto>, Producto)
+    + modificarProducto(Producto, String, double)
+    + registrarCliente(List<Cliente>, Cliente)
+}
+
+class Pago {
+    - idPago : int
+    - monto : double
+    - metodoPago : String
+    - fechaPago : Date
+}
+
+class Factura {
+    - idFactura : int
+    - fechaEmision : Date
+    - venta : Venta
+    + generarFactura() : void
+}
+
+class Inventario {
+    - productos : List<Producto>
+    + actualizarStock(Producto, int) : void
+    + eliminarProducto(Producto) : void
+    + buscarProducto(String) : Producto
+}
+
+Venta --> Cliente
+Venta --> "1..*" DetalleVenta
+DetalleVenta --> Producto
+Administrador --> Producto
+Administrador --> Cliente
+Administrador --> Venta
+
+Venta --> Pago
+Venta --> Factura
+Inventario --> Producto
+
+@enduml
